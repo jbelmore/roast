@@ -31,12 +31,14 @@ extension ExcludedApp: FetchableRecord, PersistableRecord {
     init(row: Row) {
         appBundleID = row[Columns.appBundleID]
         appName = row[Columns.appName]
-        excludedAt = row[Columns.excludedAt]
+        // Decode date from timeIntervalSinceReferenceDate (Double)
+        excludedAt = Date(timeIntervalSinceReferenceDate: row[Columns.excludedAt])
     }
 
     func encode(to container: inout PersistenceContainer) {
         container[Columns.appBundleID] = appBundleID
         container[Columns.appName] = appName
-        container[Columns.excludedAt] = excludedAt
+        // Encode date as timeIntervalSinceReferenceDate (Double)
+        container[Columns.excludedAt] = excludedAt.timeIntervalSinceReferenceDate
     }
 }

@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import ServiceManagement
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
@@ -49,9 +50,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if let button = statusItem?.button {
             button.image = NSImage(systemSymbolName: "eye.circle", accessibilityDescription: "Roast")
-            button.action = #selector(togglePopover)
+            button.action = #selector(statusItemClicked)
             button.target = self
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
+
+        // Create right-click menu
+        let menu = NSMenu()
+        menu.addItem(NSMenuItem(title: "Open Roast", action: #selector(showPopover), keyEquivalent: ""))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Quit Roast", action: #selector(quitApp), keyEquivalent: "q"))
+        statusItem?.menu = nil // Don't set menu by default, we'll show it on right-click
 
         popover = NSPopover()
         popover?.contentSize = NSSize(width: 400, height: 500)
@@ -63,7 +72,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
     }
 
-    @objc private func togglePopover() {
+    @objc private func statusItemClicked() {
+        guard let event = NSApp.currentEvent else { return }
+
+        if event.type == .rightMouseUp {
+            // Show context menu on right-click
+            showStatusMenu()
+        } else {
+            // Toggle popover on left-click
+            togglePopover()
+        }
+    }
+
+    private func showStatusMenu() {
+        let menu = NSMenu()
+        menu.addItem(NSMenuItem(title: "Open Roast", action: #selector(showPopover), keyEquivalent: ""))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Quit Roast", action: #selector(quitApp), keyEquivalent: "q"))
+
+        statusItem?.menu = menu
+        statusItem?.button?.performClick(nil)
+        statusItem?.menu = nil // Reset so left-click works again
+    }
+
+    @objc private func quitApp() {
+        // Flush any pending data before quitting
+        activityMonitor?.flushPendingData()
+        NSApp.terminate(nil)
+    }
+
+    private func togglePopover() {
         if let popover = popover {
             if popover.isShown {
                 closePopover()
@@ -73,7 +111,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func showPopover() {
+    @objc private func showPopover() {
         if let button = statusItem?.button {
             popover?.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             popover?.contentViewController?.view.window?.makeKey()

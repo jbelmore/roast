@@ -58,8 +58,9 @@ extension WeeklyReport: FetchableRecord, PersistableRecord {
 
     init(row: Row) {
         id = row[Columns.id]
-        weekStartDate = row[Columns.weekStartDate]
-        weekEndDate = row[Columns.weekEndDate]
+        // Decode dates from timeIntervalSinceReferenceDate (Double)
+        weekStartDate = Date(timeIntervalSinceReferenceDate: row[Columns.weekStartDate])
+        weekEndDate = Date(timeIntervalSinceReferenceDate: row[Columns.weekEndDate])
         rawStatsJSON = row[Columns.rawStatsJSON]
         aiAnalysis = row[Columns.aiAnalysis]
         // Handle migration: default to neutral if personality is nil
@@ -69,16 +70,17 @@ extension WeeklyReport: FetchableRecord, PersistableRecord {
         } else {
             personality = .neutral
         }
-        createdAt = row[Columns.createdAt]
+        createdAt = Date(timeIntervalSinceReferenceDate: row[Columns.createdAt])
     }
 
     func encode(to container: inout PersistenceContainer) {
         container[Columns.id] = id
-        container[Columns.weekStartDate] = weekStartDate
-        container[Columns.weekEndDate] = weekEndDate
+        // Encode dates as timeIntervalSinceReferenceDate (Double)
+        container[Columns.weekStartDate] = weekStartDate.timeIntervalSinceReferenceDate
+        container[Columns.weekEndDate] = weekEndDate.timeIntervalSinceReferenceDate
         container[Columns.rawStatsJSON] = rawStatsJSON
         container[Columns.aiAnalysis] = aiAnalysis
         container[Columns.personality] = personality.rawValue
-        container[Columns.createdAt] = createdAt
+        container[Columns.createdAt] = createdAt.timeIntervalSinceReferenceDate
     }
 }

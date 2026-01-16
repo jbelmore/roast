@@ -65,10 +65,15 @@ extension AppSession: FetchableRecord, PersistableRecord {
         appBundleID = row[Columns.appBundleID]
         appName = row[Columns.appName]
         windowTitle = row[Columns.windowTitle]
-        startTime = row[Columns.startTime]
-        endTime = row[Columns.endTime]
+        // Decode dates from timeIntervalSinceReferenceDate (Double)
+        startTime = Date(timeIntervalSinceReferenceDate: row[Columns.startTime])
+        if let endTimeInterval: Double = row[Columns.endTime] {
+            endTime = Date(timeIntervalSinceReferenceDate: endTimeInterval)
+        } else {
+            endTime = nil
+        }
         isActiveWindow = row[Columns.isActiveWindow]
-        createdAt = row[Columns.createdAt]
+        createdAt = Date(timeIntervalSinceReferenceDate: row[Columns.createdAt])
     }
 
     func encode(to container: inout PersistenceContainer) {
@@ -76,9 +81,10 @@ extension AppSession: FetchableRecord, PersistableRecord {
         container[Columns.appBundleID] = appBundleID
         container[Columns.appName] = appName
         container[Columns.windowTitle] = windowTitle
-        container[Columns.startTime] = startTime
-        container[Columns.endTime] = endTime
+        // Encode dates as timeIntervalSinceReferenceDate (Double)
+        container[Columns.startTime] = startTime.timeIntervalSinceReferenceDate
+        container[Columns.endTime] = endTime?.timeIntervalSinceReferenceDate
         container[Columns.isActiveWindow] = isActiveWindow
-        container[Columns.createdAt] = createdAt
+        container[Columns.createdAt] = createdAt.timeIntervalSinceReferenceDate
     }
 }

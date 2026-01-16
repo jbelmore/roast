@@ -1,7 +1,9 @@
 import SwiftUI
+import ServiceManagement
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
+    @StateObject private var launchAtLogin = LaunchAtLoginManager.shared
     @State private var apiKey: String = ""
     @State private var isAPIKeyVisible = false
     @State private var trackingEnabled = true
@@ -96,6 +98,27 @@ struct SettingsView: View {
                             .onChange(of: windowTitleCapture) { newValue in
                                 UserDefaults.standard.set(newValue, forKey: "windowTitleCapture")
                             }
+
+                        Divider()
+
+                        Toggle("Launch at login", isOn: $launchAtLogin.isEnabled)
+
+                        if SMAppService.mainApp.status == .requiresApproval {
+                            HStack {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundColor(.orange)
+                                Text("Requires approval in System Settings > Login Items")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+
+                            Button("Open Login Items Settings") {
+                                if let url = URL(string: "x-apple.systempreferences:com.apple.LoginItems-Settings.extension") {
+                                    NSWorkspace.shared.open(url)
+                                }
+                            }
+                            .controlSize(.small)
+                        }
 
                         if !AccessibilityHelper.hasAccessibilityPermission {
                             VStack(alignment: .leading, spacing: 8) {
@@ -225,16 +248,26 @@ struct SettingsView: View {
                 // Data Section
                 SettingsSection(title: "Data") {
                     VStack(alignment: .leading, spacing: 12) {
+                        Text("Export your activity data:")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+
                         HStack {
-                            Button("Export Data") {
+                            Button("Export JSON") {
                                 exportData()
                             }
 
-                            Button("Delete All Data") {
-                                showDeleteConfirmation = true
+                            Button("Export CSV") {
+                                exportCSV()
                             }
-                            .foregroundColor(.red)
                         }
+
+                        Divider()
+
+                        Button("Delete All Data") {
+                            showDeleteConfirmation = true
+                        }
+                        .foregroundColor(.red)
 
                         Text("All data is stored locally on your Mac. Nothing is sent to any server except the Claude API for generating reports.")
                             .font(.caption)
@@ -417,13 +450,57 @@ struct SettingsView: View {
 
             let savePanel = NSSavePanel()
             savePanel.allowedContentTypes = [.json]
-            savePanel.nameFieldStringValue = "honesty_mirror_export_\(DateHelpers.formatExportDate()).json"
+            savePanel.nameFieldStringValue = "roast_export_\(DateHelpers.formatExportDate()).json"
 
             if savePanel.runModal() == .OK, let url = savePanel.url {
                 try jsonData.write(to: url)
             }
         } catch {
             print("Failed to export data: \(error)")
+        }
+    }
+
+    private func exportCSV() {
+        do {
+            let data = try DatabaseManager.shared.exportData()
+
+            // Build CSV content for sessions
+            var csvContent = "Activity Sessions Export\n"
+            csvContent += "App Name,Bundle ID,Window Title,Start Time,End Time,Duration (seconds),Is Active\n"
+
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+            for session in data.sessions {
+                let startTime = dateFormatter.string(from: session.startTime)
+                let endTime = session.endTime.map { dateFormatter.string(from: $0) } ?? ""
+                let duration = String(format: "%.1f", session.duration)
+                let windowTitle = session.windowTitle?.replacingOccurrences(of: ",", with: ";") ?? ""
+                let appName = session.appName.replacingOccurrences(of: ",", with: ";")
+
+                csvContent += "\(appName),\(session.appBundleID),\(windowTitle),\(startTime),\(endTime),\(duration),\(session.isActiveWindow)\n"
+            }
+
+            csvContent += "\n\nApp Visits Export\n"
+            csvContent += "App Name,Bundle ID,Timestamp,Duration (seconds),Previous App Bundle ID\n"
+
+            for visit in data.visits {
+                let timestamp = dateFormatter.string(from: visit.timestamp)
+                let appName = visit.appName.replacingOccurrences(of: ",", with: ";")
+                let previousApp = visit.previousAppBundleID ?? ""
+
+                csvContent += "\(appName),\(visit.appBundleID),\(timestamp),\(visit.durationSeconds),\(previousApp)\n"
+            }
+
+            let savePanel = NSSavePanel()
+            savePanel.allowedContentTypes = [.commaSeparatedText]
+            savePanel.nameFieldStringValue = "roast_export_\(DateHelpers.formatExportDate()).csv"
+
+            if savePanel.runModal() == .OK, let url = savePanel.url {
+                try csvContent.write(to: url, atomically: true, encoding: .utf8)
+            }
+        } catch {
+            print("Failed to export CSV: \(error)")
         }
     }
 

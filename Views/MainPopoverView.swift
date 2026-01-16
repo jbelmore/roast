@@ -11,7 +11,7 @@ struct MainPopoverView: View {
                 Image(systemName: "eye.circle.fill")
                     .font(.title2)
                     .foregroundColor(.accentColor)
-                Text("Honesty Mirror")
+                Text("Roast")
                     .font(.headline)
                 Spacer()
 

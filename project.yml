@@ -42,10 +42,12 @@ targets:
     info:
       path: Info.plist
       properties:
+        CFBundleName: Roast
         CFBundleDisplayName: Roast
-        CFBundleShortVersionString: "1.0.0"
-        CFBundleVersion: "1"
+        CFBundleShortVersionString: "1.2.0"
+        CFBundleVersion: "2"
         LSUIElement: true
+        LSApplicationCategoryType: public.app-category.productivity
         NSAccessibilityUsageDescription: "Roast needs accessibility access to accurately track which app you're using and optionally capture window titles for more detailed analysis."
         NSHumanReadableCopyright: "Copyright © 2024. All rights reserved."
         # Sparkle OTA Updates

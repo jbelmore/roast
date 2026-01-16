@@ -55,19 +55,21 @@ extension AppVisit: FetchableRecord, PersistableRecord {
         id = row[Columns.id]
         appBundleID = row[Columns.appBundleID]
         appName = row[Columns.appName]
-        timestamp = row[Columns.timestamp]
+        // Decode dates from timeIntervalSinceReferenceDate (Double)
+        timestamp = Date(timeIntervalSinceReferenceDate: row[Columns.timestamp])
         durationSeconds = row[Columns.durationSeconds]
         previousAppBundleID = row[Columns.previousAppBundleID]
-        createdAt = row[Columns.createdAt]
+        createdAt = Date(timeIntervalSinceReferenceDate: row[Columns.createdAt])
     }
 
     func encode(to container: inout PersistenceContainer) {
         container[Columns.id] = id
         container[Columns.appBundleID] = appBundleID
         container[Columns.appName] = appName
-        container[Columns.timestamp] = timestamp
+        // Encode dates as timeIntervalSinceReferenceDate (Double)
+        container[Columns.timestamp] = timestamp.timeIntervalSinceReferenceDate
         container[Columns.durationSeconds] = durationSeconds
         container[Columns.previousAppBundleID] = previousAppBundleID
-        container[Columns.createdAt] = createdAt
+        container[Columns.createdAt] = createdAt.timeIntervalSinceReferenceDate
     }
 }
