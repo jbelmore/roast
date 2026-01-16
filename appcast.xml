@@ -8,5 +8,29 @@
 
         <!-- Add new releases here (newest first) -->
 
+        <item>
+            <title>Version 1.0.0</title>
+            <description><![CDATA[
+                <h2>Initial Release</h2>
+                <ul>
+                    <li>Activity monitoring via menu bar</li>
+                    <li>Claude AI-powered weekly reports</li>
+                    <li>Multiple personality modes (Encouraging, Professional, Neutral, Roast)</li>
+                    <li>Shareable roast reports</li>
+                    <li>Automatic updates via Sparkle</li>
+                </ul>
+            ]]></description>
+            <pubDate>Fri, 16 Jan 2026 11:15:24 -0500</pubDate>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/jbelmore/roast/releases/download/v1.0.0/Roast-1.0.0.zip"
+                sparkle:version="1"
+                sparkle:shortVersionString="1.0.0"
+                length="6118176"
+                type="application/octet-stream"
+                sparkle:edSignature="o43NPrm8+M74UtPHAPtfSq1L7PQj0ITT4nftrhjW8RVII6W4CJ8AlBvS1xQuqzOKucQe4A0LcmtBY7jSBclYDA=="
+            />
+        </item>
+
     </channel>
 </rss>
