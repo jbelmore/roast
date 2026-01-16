@@ -1,0 +1,61 @@
+name: Roast
+options:
+  bundleIdPrefix: com.roastapp
+  deploymentTarget:
+    macOS: "13.0"
+  createIntermediateGroups: true
+
+packages:
+  GRDB:
+    url: https://github.com/groue/GRDB.swift
+    from: 6.24.0
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: 2.5.0
+
+targets:
+  Roast:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+      - path: Monitoring
+      - path: Data
+      - path: Analytics
+      - path: AI
+      - path: Views
+      - path: Utilities
+      - path: Resources
+    dependencies:
+      - package: GRDB
+      - package: Sparkle
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.roastapp.app
+        PRODUCT_NAME: Roast
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        INFOPLIST_FILE: Info.plist
+        CODE_SIGN_ENTITLEMENTS: Roast.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_IDENTITY: "-"
+        DEVELOPMENT_TEAM: ""
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Roast
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        LSUIElement: true
+        NSAccessibilityUsageDescription: "Roast needs accessibility access to accurately track which app you're using and optionally capture window titles for more detailed analysis."
+        NSHumanReadableCopyright: "Copyright © 2024. All rights reserved."
+        # Sparkle OTA Updates
+        SUFeedURL: "https://YOUR_DOMAIN.com/roast/appcast.xml"
+        SUPublicEDKey: "YOUR_PUBLIC_ED25519_KEY_HERE"
+        SUEnableAutomaticChecks: true
+    entitlements:
+      path: Roast.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        com.apple.security.automation.apple-events: true
+        com.apple.security.files.user-selected.read-write: true
+        com.apple.security.network.client: true
