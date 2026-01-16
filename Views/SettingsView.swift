@@ -257,58 +257,66 @@ struct SettingsView: View {
 
                             Spacer()
 
-                            Button(action: {
-                                UpdateManager.shared.checkForUpdates()
-                            }) {
-                                if UpdateManager.shared.isCheckingForUpdates {
-                                    ProgressView()
-                                        .scaleEffect(0.7)
-                                } else {
-                                    Label("Check for Updates", systemImage: "arrow.clockwise")
+                            if UpdateManager.shared.isSparkleAvailable {
+                                Button(action: {
+                                    UpdateManager.shared.checkForUpdates()
+                                }) {
+                                    if UpdateManager.shared.isCheckingForUpdates {
+                                        ProgressView()
+                                            .scaleEffect(0.7)
+                                    } else {
+                                        Label("Check for Updates", systemImage: "arrow.clockwise")
+                                    }
                                 }
+                                .disabled(!UpdateManager.shared.canCheckForUpdates || UpdateManager.shared.isCheckingForUpdates)
                             }
-                            .disabled(!UpdateManager.shared.canCheckForUpdates || UpdateManager.shared.isCheckingForUpdates)
                         }
 
-                        HStack {
-                            Text("Last checked:")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(UpdateManager.shared.lastCheckFormatted)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-
-                        Divider()
-
-                        Toggle("Automatically check for updates", isOn: Binding(
-                            get: { UpdateManager.shared.automaticallyChecksForUpdates },
-                            set: { UpdateManager.shared.automaticallyChecksForUpdates = $0 }
-                        ))
-
-                        Toggle("Automatically download updates", isOn: Binding(
-                            get: { UpdateManager.shared.automaticallyDownloadsUpdates },
-                            set: { UpdateManager.shared.automaticallyDownloadsUpdates = $0 }
-                        ))
-
-                        HStack {
-                            Text("Check frequency:")
-                                .font(.caption)
-
-                            Picker("", selection: Binding(
-                                get: {
-                                    UpdateCheckInterval.allCases.first {
-                                        $0.seconds == UpdateManager.shared.updateCheckInterval
-                                    } ?? .daily
-                                },
-                                set: { UpdateManager.shared.updateCheckInterval = $0.seconds }
-                            )) {
-                                ForEach(UpdateCheckInterval.allCases, id: \.self) { interval in
-                                    Text(interval.title).tag(interval)
-                                }
+                        if UpdateManager.shared.isSparkleAvailable {
+                            HStack {
+                                Text("Last checked:")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text(UpdateManager.shared.lastCheckFormatted)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                             }
-                            .labelsHidden()
-                            .frame(width: 120)
+
+                            Divider()
+
+                            Toggle("Automatically check for updates", isOn: Binding(
+                                get: { UpdateManager.shared.automaticallyChecksForUpdates },
+                                set: { UpdateManager.shared.automaticallyChecksForUpdates = $0 }
+                            ))
+
+                            Toggle("Automatically download updates", isOn: Binding(
+                                get: { UpdateManager.shared.automaticallyDownloadsUpdates },
+                                set: { UpdateManager.shared.automaticallyDownloadsUpdates = $0 }
+                            ))
+
+                            HStack {
+                                Text("Check frequency:")
+                                    .font(.caption)
+
+                                Picker("", selection: Binding(
+                                    get: {
+                                        UpdateCheckInterval.allCases.first {
+                                            $0.seconds == UpdateManager.shared.updateCheckInterval
+                                        } ?? .daily
+                                    },
+                                    set: { UpdateManager.shared.updateCheckInterval = $0.seconds }
+                                )) {
+                                    ForEach(UpdateCheckInterval.allCases, id: \.self) { interval in
+                                        Text(interval.title).tag(interval)
+                                    }
+                                }
+                                .labelsHidden()
+                                .frame(width: 120)
+                            }
+                        } else {
+                            Text("Updates available in release builds")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }

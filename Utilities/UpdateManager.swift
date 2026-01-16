@@ -6,8 +6,8 @@ import AppKit
 class UpdateManager: NSObject, ObservableObject {
     static let shared = UpdateManager()
 
-    // Sparkle's update controller
-    private var updaterController: SPUStandardUpdaterController!
+    // Sparkle's update controller - lazy initialized
+    private var updaterController: SPUStandardUpdaterController?
 
     // Published properties for UI binding
     @Published var canCheckForUpdates: Bool = false
@@ -17,16 +17,16 @@ class UpdateManager: NSObject, ObservableObject {
     @Published var updateAvailable: Bool = false
     @Published var latestVersion: String?
 
+    // Check if Sparkle is available (proper app bundle with valid feed URL)
+    var isSparkleAvailable: Bool {
+        guard Bundle.main.bundlePath.hasSuffix(".app") else { return false }
+        guard let feedURL = Bundle.main.infoDictionary?["SUFeedURL"] as? String,
+              !feedURL.contains("YOUR_DOMAIN") else { return false }
+        return true
+    }
+
     private override init() {
         super.init()
-
-        // Initialize Sparkle updater controller
-        // The updater will use SUFeedURL from Info.plist
-        updaterController = SPUStandardUpdaterController(
-            startingUpdater: true,
-            updaterDelegate: nil,
-            userDriverDelegate: nil
-        )
 
         // Get current version
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -36,20 +36,34 @@ class UpdateManager: NSObject, ObservableObject {
         // Load last check date
         lastUpdateCheck = UserDefaults.standard.object(forKey: "lastUpdateCheck") as? Date
 
-        // Observe updater state
+        // Only initialize Sparkle if running as a proper app bundle with valid feed URL
+        if isSparkleAvailable {
+            initializeSparkle()
+        }
+    }
+
+    private func initializeSparkle() {
+        // Initialize Sparkle updater controller
+        updaterController = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        )
         setupObservers()
     }
 
     private func setupObservers() {
+        guard let controller = updaterController else { return }
         // Check if we can check for updates
-        updaterController.updater.publisher(for: \.canCheckForUpdates)
+        controller.updater.publisher(for: \.canCheckForUpdates)
             .assign(to: &$canCheckForUpdates)
     }
 
     /// Check for updates manually
     func checkForUpdates() {
+        guard let controller = updaterController else { return }
         isCheckingForUpdates = true
-        updaterController.checkForUpdates(nil)
+        controller.checkForUpdates(nil)
 
         // Update last check time
         lastUpdateCheck = Date()
@@ -63,32 +77,32 @@ class UpdateManager: NSObject, ObservableObject {
 
     /// Check for updates silently in background
     func checkForUpdatesInBackground() {
-        updaterController.updater.checkForUpdatesInBackground()
+        updaterController?.updater.checkForUpdatesInBackground()
     }
 
     /// Whether automatic update checks are enabled
     var automaticallyChecksForUpdates: Bool {
-        get { updaterController.updater.automaticallyChecksForUpdates }
+        get { updaterController?.updater.automaticallyChecksForUpdates ?? false }
         set {
-            updaterController.updater.automaticallyChecksForUpdates = newValue
+            updaterController?.updater.automaticallyChecksForUpdates = newValue
             objectWillChange.send()
         }
     }
 
     /// Whether to automatically download updates
     var automaticallyDownloadsUpdates: Bool {
-        get { updaterController.updater.automaticallyDownloadsUpdates }
+        get { updaterController?.updater.automaticallyDownloadsUpdates ?? false }
         set {
-            updaterController.updater.automaticallyDownloadsUpdates = newValue
+            updaterController?.updater.automaticallyDownloadsUpdates = newValue
             objectWillChange.send()
         }
     }
 
     /// Update check interval in seconds (default: 1 day)
     var updateCheckInterval: TimeInterval {
-        get { updaterController.updater.updateCheckInterval }
+        get { updaterController?.updater.updateCheckInterval ?? 86400 }
         set {
-            updaterController.updater.updateCheckInterval = newValue
+            updaterController?.updater.updateCheckInterval = newValue
             objectWillChange.send()
         }
     }
