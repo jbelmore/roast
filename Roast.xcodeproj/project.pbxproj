@@ -33,7 +33,6 @@
 		B6762453E6EAFB712ED41157 /* Prompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F3A09B902FD40761D6BF8 /* Prompts.swift */; };
 		BAA26CC2462BEEF36ABFDF58 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E24FDBF2F37514AE6F2FB41 /* KeychainHelper.swift */; };
 		C2088D5444384440C140BBC0 /* AppUsageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6CC091EA9320F35A413793 /* AppUsageRow.swift */; };
-		CE1D15FC24437C80BD6B55BB /* appcast.xml in Resources */ = {isa = PBXBuildFile; fileRef = C658FA5D8CFB2441CF6AE517 /* appcast.xml */; };
 		D4DD4943E666270018143D17 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939D36295879C084C732EFAC /* HistoryView.swift */; };
 		DD7D975B358E1D6BF2EE9B98 /* HonestyMirrorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05BDF35436670947132F49D /* HonestyMirrorApp.swift */; };
 		DF600B134502D49F58033329 /* WeeklyReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155F007296F272449D3F4152 /* WeeklyReportView.swift */; };
@@ -64,7 +63,6 @@
 		B7815A6BCB09B8572B5331B1 /* AnalyticsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEngine.swift; sourceTree = "<group>"; };
 		BCAB99BABF89DCC592EAF5D3 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		C07AAB9F8ED505EF6C09E855 /* ReportGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportGenerator.swift; sourceTree = "<group>"; };
-		C658FA5D8CFB2441CF6AE517 /* appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		CA9CBEC27996DB7013142A9C /* WeeklyStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyStats.swift; sourceTree = "<group>"; };
 		CAA44CAB8810DDDA33ADCC6F /* UpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
 		D05BDF35436670947132F49D /* HonestyMirrorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HonestyMirrorApp.swift; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 		0A5C06F22D1DD384EC75E0E8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C658FA5D8CFB2441CF6AE517 /* appcast.xml */,
 				8E746013A4B2EDAD574E54DF /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -277,7 +274,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E8FCC4BBD8EC0080298AE5B /* Assets.xcassets in Resources */,
-				CE1D15FC24437C80BD6B55BB /* appcast.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

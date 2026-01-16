@@ -49,8 +49,8 @@ targets:
         NSAccessibilityUsageDescription: "Roast needs accessibility access to accurately track which app you're using and optionally capture window titles for more detailed analysis."
         NSHumanReadableCopyright: "Copyright © 2024. All rights reserved."
         # Sparkle OTA Updates
-        SUFeedURL: "https://YOUR_DOMAIN.com/roast/appcast.xml"
-        SUPublicEDKey: "YOUR_PUBLIC_ED25519_KEY_HERE"
+        SUFeedURL: "https://raw.githubusercontent.com/jbelmore/roast/main/appcast.xml"
+        SUPublicEDKey: "w0e0LoevLteGuXzUuSTrFQ5B9he32luwsRKGGlQ1YNo="
         SUEnableAutomaticChecks: true
     entitlements:
       path: Roast.entitlements
