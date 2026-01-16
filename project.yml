@@ -1,4 +1,4 @@
-name: Roast
+name: Roast by Pixel Pantry
 options:
   bundleIdPrefix: com.roastapp
   deploymentTarget:
@@ -44,8 +44,8 @@ targets:
       properties:
         CFBundleName: Roast
         CFBundleDisplayName: Roast
-        CFBundleShortVersionString: "1.2.0"
-        CFBundleVersion: "2"
+        CFBundleShortVersionString: "1.3.0"
+        CFBundleVersion: "3"
         LSUIElement: true
         LSApplicationCategoryType: public.app-category.productivity
         NSAccessibilityUsageDescription: "Roast needs accessibility access to accurately track which app you're using and optionally capture window titles for more detailed analysis."

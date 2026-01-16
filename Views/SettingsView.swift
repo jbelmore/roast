@@ -8,7 +8,7 @@ struct SettingsView: View {
     @State private var isAPIKeyVisible = false
     @State private var trackingEnabled = true
     @State private var windowTitleCapture = false
-    @State private var defaultPersonality: ReportPersonality = .neutral
+    @State private var defaultPersonality: ReportPersonality = .roast
     @State private var excludedApps: [ExcludedApp] = []
     @State private var runningApps: [RunningAppInfo] = []
     @State private var showExportConfirmation = false

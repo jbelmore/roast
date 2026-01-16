@@ -3,7 +3,7 @@ import AppKit
 
 struct WeeklyReportView: View {
     @EnvironmentObject var appState: AppState
-    @State private var selectedPersonality: ReportPersonality = .neutral
+    @State private var selectedPersonality: ReportPersonality = .roast
     @State private var isRegenerating = false
     @State private var showShareSheet = false
     @State private var shareableRoast: ShareableRoast?

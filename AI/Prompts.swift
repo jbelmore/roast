@@ -216,7 +216,7 @@ enum Prompts {
 
     Use second person ("you"). Be theatrical. Make them laugh at themselves. This should be SHAREABLE—something they'd want to post or send to friends because it's so funny.
 
-    END THE ROAST WITH: "🔥 ROASTED BY HONESTY MIRROR 🔥" followed by a one-line summary burn they can easily share.
+    END THE ROAST WITH: "🔥 ROASTED BY Roast from Pixel Pantry 🔥" followed by a one-line summary burn they can easily share.
     """
 
     // MARK: - Daily Summary Prompts
