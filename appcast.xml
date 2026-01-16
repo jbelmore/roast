@@ -9,6 +9,29 @@
         <!-- Add new releases here (newest first) -->
 
         <item>
+            <title>Version 1.2.0</title>
+            <description><![CDATA[
+                <h2>What's New</h2>
+                <ul>
+                    <li>Right-click menu bar icon to quit the app</li>
+                    <li>Launch at login option in Settings</li>
+                    <li>CSV export for activity data</li>
+                    <li>Fixed date tracking issue in Today tab</li>
+                </ul>
+            ]]></description>
+            <pubDate>Thu, 16 Jan 2026 12:06:00 -0500</pubDate>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/jbelmore/roast/releases/download/v1.2.0/Roast-1.2.0.zip"
+                sparkle:version="2"
+                sparkle:shortVersionString="1.2.0"
+                length="6136323"
+                type="application/octet-stream"
+                sparkle:edSignature="UT+ltaqQKOew2D5mTjwphDlL0d5ZNqigAKcLOgN5cE/wO9LWIKdzjkUoeiXjgBt5ruHyar0B2Yp9ww5DD69RCQ=="
+            />
+        </item>
+
+        <item>
             <title>Version 1.0.0</title>
             <description><![CDATA[
                 <h2>Initial Release</h2>
