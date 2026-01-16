@@ -16,11 +16,19 @@ class DatabaseManager {
             appropriateFor: nil,
             create: true
         )
-        let appDirectoryURL = appSupportURL.appendingPathComponent("HonestyMirror", isDirectory: true)
+        let appDirectoryURL = appSupportURL.appendingPathComponent("Roast", isDirectory: true)
 
         try fileManager.createDirectory(at: appDirectoryURL, withIntermediateDirectories: true)
 
-        let databaseURL = appDirectoryURL.appendingPathComponent("honesty_mirror.sqlite")
+        // Migrate from old location if exists
+        let oldDirectoryURL = appSupportURL.appendingPathComponent("HonestyMirror", isDirectory: true)
+        let oldDatabaseURL = oldDirectoryURL.appendingPathComponent("honesty_mirror.sqlite")
+        let databaseURL = appDirectoryURL.appendingPathComponent("roast.sqlite")
+
+        if fileManager.fileExists(atPath: oldDatabaseURL.path) && !fileManager.fileExists(atPath: databaseURL.path) {
+            try? fileManager.moveItem(at: oldDatabaseURL, to: databaseURL)
+            try? fileManager.removeItem(at: oldDirectoryURL)
+        }
 
         var config = Configuration()
         config.foreignKeysEnabled = true

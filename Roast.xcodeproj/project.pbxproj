@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -256,9 +256,10 @@
 			mainGroup = 89F31F6A392B4CC2269E1108;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				31E83831CD1BAE842C89B664 /* XCRemoteSwiftPackageReference "GRDB" */,
+				31E83831CD1BAE842C89B664 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				DC5D024AD3A3801A40A1E0B9 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -382,7 +383,6 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -404,7 +404,6 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -503,7 +502,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		31E83831CD1BAE842C89B664 /* XCRemoteSwiftPackageReference "GRDB" */ = {
+		31E83831CD1BAE842C89B664 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/GRDB.swift";
 			requirement = {
@@ -524,7 +523,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		46B4891ACE04BA33624A9EF3 /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31E83831CD1BAE842C89B664 /* XCRemoteSwiftPackageReference "GRDB" */;
+			package = 31E83831CD1BAE842C89B664 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
 		};
 		763D5255D9540260B9F5B99F /* Sparkle */ = {
